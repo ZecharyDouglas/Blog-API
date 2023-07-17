@@ -235,7 +235,7 @@ app.patch("/comments/:commentID", async (req, res) => {
 app.delete("/comments/:commentID", async (req, res) => {
   const commentID = req.params.commentID;
   try {
-    const deleteComment = await Posts.destroy({ where: { id: commentID } });
+    const deleteComment = await Comments.destroy({ where: { id: commentID } });
     if (deleteComment > 0) {
       res.status(200).send({ message: "Comment was deleted Successfully!" });
     } else {
