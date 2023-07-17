@@ -11,6 +11,14 @@ app.use((req, res, next) => {
   console.log(`Request: ${req.method} ${req.originalUrl}`);
   next();
 });
+const authenticateUser = (req, res, next) => {
+  if (!req.session.userId) {
+    return res
+      .status(401)
+      .json({ message: "You must be logged in to view this page." });
+  }
+  next();
+};
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -107,7 +115,7 @@ app.delete("/logout", (req, res) => {
 
 //////////////////posts table operations///////////////////////
 
-app.get("/posts", async (req, res) => {
+app.get("/posts", authenticateUser, async (req, res) => {
   try {
     const allPosts = await Posts.findAll();
     res.status(200).json(allPosts);
@@ -117,7 +125,7 @@ app.get("/posts", async (req, res) => {
   }
 });
 
-app.get("/posts/:postID", async (req, res) => {
+app.get("/posts/:postID", authenticateUser, async (req, res) => {
   const postID = req.params.postID;
   try {
     const post = await Posts.findOne({ where: { id: postID } });
@@ -132,7 +140,7 @@ app.get("/posts/:postID", async (req, res) => {
   }
 });
 
-app.post("/posts", async (req, res) => {
+app.post("/posts", authenticateUser, async (req, res) => {
   try {
     newPost = await Posts.create(req.body);
     res.status(201).json(newPost);
@@ -141,7 +149,7 @@ app.post("/posts", async (req, res) => {
   }
 });
 
-app.patch("/posts/:postID", async (req, res) => {
+app.patch("/posts/:postID", authenticateUser, async (req, res) => {
   const postId = req.params.postID;
   try {
     const [numAffectedRows, affectedRows] = await Posts.update(req.body, {
@@ -159,7 +167,7 @@ app.patch("/posts/:postID", async (req, res) => {
   }
 });
 
-app.delete("/posts/:postID", async (req, res) => {
+app.delete("/posts/:postID", authenticateUser, async (req, res) => {
   const postID = req.params.postID;
   try {
     const deletePost = await Posts.destroy({ where: { id: postID } });
@@ -176,7 +184,7 @@ app.delete("/posts/:postID", async (req, res) => {
 
 //////////////////comments table operations////////////////////
 
-app.get("/comments", async (req, res) => {
+app.get("/comments", authenticateUser, async (req, res) => {
   try {
     const allComments = await Comments.findAll();
     res.status(200).json(allComments);
@@ -186,10 +194,10 @@ app.get("/comments", async (req, res) => {
   }
 });
 
-app.get("/comments/:commentID", async (req, res) => {
+app.get("/comments/:commentID", authenticateUser, async (req, res) => {
   const commentID = req.params.commentID;
   try {
-    const comment = await Posts.findOne({ where: { id: commentID } });
+    const comment = await Comments.findOne({ where: { id: commentID } });
     if (comment) {
       res.status(200).json(comment);
     } else {
@@ -201,7 +209,7 @@ app.get("/comments/:commentID", async (req, res) => {
   }
 });
 
-app.post("/comments", async (req, res) => {
+app.post("/comments", authenticateUser, async (req, res) => {
   try {
     const newComment = await Comments.create({
       comment_content: req.body.comment_content,
@@ -214,7 +222,7 @@ app.post("/comments", async (req, res) => {
   }
 });
 
-app.patch("/comments/:commentID", async (req, res) => {
+app.patch("/comments/:commentID", authenticateUser, async (req, res) => {
   const commentID = req.params.commentID;
   try {
     const [numAffectedRows, affectedRows] = await Comments.update(req.body, {
@@ -232,7 +240,7 @@ app.patch("/comments/:commentID", async (req, res) => {
   }
 });
 
-app.delete("/comments/:commentID", async (req, res) => {
+app.delete("/comments/:commentID", authenticateUser, async (req, res) => {
   const commentID = req.params.commentID;
   try {
     const deleteComment = await Comments.destroy({ where: { id: commentID } });
