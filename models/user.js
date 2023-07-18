@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Comments, { foreignKey: "user_id" });
     }
   }
+
   User.init(
     {
       id: {
