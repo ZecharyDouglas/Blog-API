@@ -14,12 +14,12 @@ function Header() {
   return (
     <ChakraProvider>
       <div className=" flex flex-col items-center">
-        <nav className="flex justify-between border border-blue-400 w-10/12 mt-10 p-5 rounded-md">
+        <nav className="flex  shadow-xl justify-between border border-black w-full mt-10 p-5 rounded-md">
           <div>
-            <Button className="mr-2" colorScheme="gray">
+            <Button className="mr-2" colorScheme="yellow">
               View Posts
             </Button>
-            <Button className="mr-2" colorScheme="gray">
+            <Button className="mr-2" colorScheme="yellow">
               View Comments
             </Button>
           </div>
@@ -27,19 +27,19 @@ function Header() {
           <div>
             <Button
               className="mr-2"
-              colorScheme="gray"
+              colorScheme="yellow"
               onClick={() => setRegisterOpen(true)}
             >
               Register
             </Button>
             <Button
               className="mr-2"
-              colorScheme="blue"
+              colorScheme="yellow"
               onClick={() => setLoginOpen(true)}
             >
               Login
             </Button>
-            <Button colorScheme="red">Logout</Button>
+            <Button colorScheme="yellow">Logout</Button>
           </div>
         </nav>
         {registerOpen && (
@@ -58,7 +58,7 @@ function Header() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <div className="bg-slate-200 h-[1000px] ">
+    <div className="bg-yellow-200 h-[1000px] ">
       <Header />
       <div className="flex flex-col items-center">
         <App />
