@@ -4,7 +4,19 @@ const { User, Comments, Posts } = require("./models");
 const express = require("express");
 const app = express();
 const port = 4000;
+// server.js
 
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+  })
+);
+
+// ...routes
 //middleware
 app.use(express.json());
 app.use((req, res, next) => {

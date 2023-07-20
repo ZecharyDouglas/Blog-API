@@ -17,5 +17,5 @@ import {
 import { useState } from "react";
 
 export default function App() {
-  return <div>Hello</div>;
+  return <div className=" mt-10">Hello</div>;
 }
