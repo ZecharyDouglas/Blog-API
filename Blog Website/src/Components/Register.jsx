@@ -14,20 +14,46 @@ import {
   FormErrorMessage,
   FormHelperText,
   Input,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Register({ isOpen, onClose }) {
   const { onOpen } = useDisclosure();
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [alertVisable, setAlertVisable] = useState(false);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleName = (e) => {
     setUserName(e.target.value);
   };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+  };
+  const submit = async () => {
+    const login = {
+      name: `${userName}`,
+      email: `${email}`,
+      password: `${password}`,
+    };
+    try {
+      await axios({
+        method: "post",
+        url: "http://localhost:4000/signup",
+        data: login,
+      }).then((res) => {
+        setAlertVisable(true);
+        console.log(res.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const isError = email === "";
@@ -38,6 +64,18 @@ export default function Register({ isOpen, onClose }) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Register</ModalHeader>
+          {alertVisable ? (
+            <Alert status="success">
+              <AlertIcon />
+              <Box>
+                <AlertTitle>Success!</AlertTitle>
+                <AlertDescription>
+                  Your application has been received. We will review your
+                  application and respond within the next 48 hours.
+                </AlertDescription>
+              </Box>
+            </Alert>
+          ) : null}
           <ModalCloseButton />
           <ModalBody>
             <FormControl isInvalid={isError}>
@@ -72,9 +110,10 @@ export default function Register({ isOpen, onClose }) {
               )}
             </FormControl>
           </ModalBody>
-
           <ModalFooter>
-            <Button variant="ghost">Sign Up</Button>
+            <Button onClick={submit} variant="ghost">
+              Sign Up
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

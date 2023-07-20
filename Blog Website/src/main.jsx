@@ -10,10 +10,11 @@ import Register from "./Components/Register.jsx";
 function Header() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+
   return (
     <ChakraProvider>
-      <div className="bg-slate-200 h-[1000px] flex flex-col items-center">
-        <nav className="flex justify-between border border-red-400 w-10/12 mt-10 p-5 rounded-md">
+      <div className=" flex flex-col items-center">
+        <nav className="flex justify-between border border-blue-400 w-10/12 mt-10 p-5 rounded-md">
           <div>
             <Button className="mr-2" colorScheme="gray">
               View Posts
@@ -57,7 +58,11 @@ function Header() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Header />
-    <App />
+    <div className="bg-slate-200 h-[1000px] ">
+      <Header />
+      <div className="flex flex-col items-center">
+        <App />
+      </div>
+    </div>
   </React.StrictMode>
 );
