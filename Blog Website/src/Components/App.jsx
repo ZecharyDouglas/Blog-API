@@ -9,10 +9,25 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 export default function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const isError = email === "";
+
   return (
     <div className="flex items-center">
       <Button className=" mt-5" onClick={onOpen}>
@@ -25,12 +40,29 @@ export default function App() {
           <ModalHeader>Modal Title</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Perferendis rem veritatis atque doloribus reiciendis vero sint
-              earum velit, in suscipit ipsum ullam! Incidunt delectus odit nobis
-              ea enim commodi cupiditate!
-            </p>
+            <FormControl isInvalid={isError}>
+              <FormLabel>Email</FormLabel>
+              <Input type="email" value={email} onChange={handleEmailChange} />
+              {!isError ? (
+                <FormHelperText>
+                  Enter the email like to receive the newsletter on.
+                </FormHelperText>
+              ) : (
+                <FormErrorMessage>Email is required.</FormErrorMessage>
+              )}
+
+              <FormLabel>Password</FormLabel>
+              <Input
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              {!isError ? (
+                <FormHelperText>Enter a password to sign in.</FormHelperText>
+              ) : (
+                <FormErrorMessage>Password is required.</FormErrorMessage>
+              )}
+            </FormControl>
           </ModalBody>
 
           <ModalFooter>
